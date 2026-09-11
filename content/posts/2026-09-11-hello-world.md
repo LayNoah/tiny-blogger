@@ -17,4 +17,4 @@ Slug: url-slug
 본문...
 ```
 
-Push to `master` and GitHub Actions rebuilds and deploys the site.
+Push to `main` and GitHub Actions rebuilds and deploys the site.

@@ -1,6 +1,6 @@
 # Noah.md
 
-Pelican 정적 블로그. `master` 에 push 하면 https://laynoah.github.io/tiny-blogger/ 에 자동 배포된다.
+Pelican 정적 블로그. `main` 에 push 하면 https://laynoah.github.io/tiny-blogger/ 에 자동 배포된다.
 모양(색·글꼴·배치) 바꾸는 법은 [FixTemplate.md](FixTemplate.md).
 
 ## 처음 한 번
