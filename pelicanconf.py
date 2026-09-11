@@ -2,8 +2,8 @@
 # Local preview:  pelican content -s pelicanconf.py -r -l
 # Production build is done by publishconf.py (used in GitHub Actions).
 
-AUTHOR = 'Noah Hwang'
-SITENAME = "Noah's Blog"
+AUTHOR = 'Noah Seongjin Hwang'
+SITENAME = "Noah.md"
 SITEURL = ''            # empty for local preview; publishconf.py sets the real URL
 
 PATH = 'content'

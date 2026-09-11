@@ -1,8 +1,8 @@
 {# Ported from blog/templates/nav.html. Login/Admin menu removed (static site). #}
-<nav class="navbar navbar-expand flex-column navbar-dark bg-primary">
+<nav class="navbar navbar-expand navbar-dark bg-primary">
   <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}</a>
-  <div class="navbar-nav-scroll" id="navbarColor01">
-    <ul class="navbar-nav mr-auto">
+  <div class="navbar-nav-scroll ml-auto" id="navbarColor01">
+    <ul class="navbar-nav">
       {% for p in pages %}
       <li class="nav-item">
         <a class="nav-link" href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
