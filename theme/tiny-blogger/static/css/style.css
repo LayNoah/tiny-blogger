@@ -74,6 +74,16 @@ body {
 }
 .navbar {
     border: 0 !important;       /* Lumen 테마가 넣는 바 아래 4px 선 제거. 선을 원하면 이 줄 삭제 */
+    padding-left: 1.75rem;      /* 본문(.content) 좌우 여백과 같게 → 제목·메뉴가 본문 양끝과 정렬 */
+    padding-right: 1.75rem;
+}
+/* 바 안쪽 폭. 본문 카드(.content-home, 4-2번)와 같은 값을 써야 제목·메뉴가 본문과 줄이 맞는다 */
+.navbar .navbar-inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 70rem;           /* = .content-home max-width */
+    margin: 0 auto;
 }
 
 /* 3-2. 블로그 제목 (Noah.md) ------------------------------------------- */
@@ -85,7 +95,7 @@ body {
     color: #ffffff !important;  /* 글자색 */
     letter-spacing: 0.07em;     /* 자간. 0 = 기본, 0.1em = 넓게, -0.02em = 좁게 */
     white-space: nowrap;        /* 한 줄 유지 */
-    margin-left: 20rem;          /* 왼쪽 여백. 바 자체 여백(1rem)에 더해진다 */
+    margin-left: 0;             /* 왼쪽 여백. 정렬은 .navbar-inner 가 맡으므로 0 */
     margin-top: 2.0px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
 }
 
@@ -99,10 +109,13 @@ body {
 
 /* 3-2-2. 부제 (Talk is cheap. Show me the code.) — pelicanconf.py 의 SITESUBTITLE */
 .navbar-brand .navbar-tagline {
-    font-weight: 300;           /* 굵기. 제목(800)보다 가늘게 */
-    font-size: 1.2rem;          /* 크기. 제목(1.3rem)보다 작게 */
+    font-family: "Pretendard", var(--font-main);
+                                /* 나눔스퀘어는 300(L)과 400(R) 굵기 차이가 거의 없어 얇게 보이지 않는다.
+                                   Pretendard 는 100~900 이 있어 200 으로 확실히 가늘게 */
+    font-weight: 200;           /* 굵기. 더 가늘게 100, 조금 굵게 300 */
+    font-size: 1.05rem;         /* 크기. 제목(1.3rem)보다 작게 */
     letter-spacing: 0;          /* 자간. 제목(0.07em)보다 좁게. 더 좁히려면 -0.02em */
-    opacity: 0.9;               /* 살짝 연하게. 1 = 제목과 같은 흰색 */
+    opacity: 0.85;              /* 살짝 연하게. 1 = 제목과 같은 흰색 */
 }
 
 /* 제목 글자 모양을 가로로 늘리려면 주석 해제. 1.1 = 10% 넓게 */
@@ -135,7 +148,7 @@ body {
     margin-top: 2.5px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
 }
 .navbar .navbar-nav-scroll {
-    margin-right: 20rem;         /* 메뉴 전체의 오른쪽 여백. 바 자체 여백(1rem)에 더해진다 */
+    margin-right: 0;            /* 메뉴 오른쪽 여백. 정렬은 .navbar-inner 가 맡으므로 0 */
 }
 .navbar .nav-link:hover {
     color: #ffffff !important;  /* 마우스 올렸을 때 */
@@ -177,7 +190,7 @@ body {
 .post .post-category a {
     font-family: var(--font-main);
     font-weight: 400;           /* 굵기 */
-    font-size: 1rem;            /* 크기 */
+    font-size: 0.85rem;         /* 크기. 본문(0.9rem)보다 작게 → 보조 정보 */
     color: var(--color-category);   /* 색. 2번 섹션 변수 대신 #코드를 직접 써도 됨 */
     text-decoration: none;
 }
@@ -199,7 +212,7 @@ body {
 .post .body {
     font-family: var(--font-main);
     font-weight: 300;           /* 굵기. 가늘게 300, 보통 400 */
-    font-size: 0.8rem;          /* 크기 */
+    font-size: 0.9rem;          /* 크기. 카테고리·날짜(0.85rem)보다 크게 */
     line-height: 1.7;           /* 줄 간격 */
     margin: 1rem 0;             /* 위/아래 여백 */
 }
@@ -208,7 +221,7 @@ body {
 .post .post-date {
     font-family: var(--font-main);
     font-weight: 300;           /* 굵기 */
-    font-size: 1rem;            /* 크기 */
+    font-size: 0.85rem;         /* 크기. 본문(0.9rem)보다 작게 */
     color: var(--color-date);   /* 색 */
     margin-top: 0.5rem;         /* 본문과의 간격 */
 }
@@ -218,7 +231,7 @@ body {
 .post header .post-meta a {
     font-family: var(--font-main);
     font-weight: 300;
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--color-date);
     text-decoration: none;
 }
@@ -234,17 +247,16 @@ body {
 .post-with-thumb {
     display: flex;
     flex-direction: row-reverse;    /* 이미지 왼쪽, 글 오른쪽. 글을 왼쪽으로 되돌리려면 row */
-    gap: 5.0rem;                    /* 그림 오른쪽 ↔ 글 사이 간격. 0 = 딱 붙음, 3rem = 넓게 */
+    gap: 4rem;                      /* 그림 오른쪽 ↔ 글 사이 간격. 0 = 딱 붙음, 3rem = 넓게 */
     align-items: stretch;           /* 이미지 칸 높이 = 글 높이 */
 }
 /* 글 칸은 폭 고정, 이미지 칸이 나머지를 채운다.
    → gap 을 늘리면 글은 제자리, 이미지가 왼쪽으로 이동한다. */
 .post-with-thumb .post-text {
-    flex: 0 0 30rem;                /* 글 칸 폭 (오른쪽 여백 포함). 키우면 글이 왼쪽으로 넓어지고 이미지는 왼쪽으로 밀림 */
+    flex: 0 0 34rem;                /* 글 칸 폭. 카드(70rem) − gap(4rem) 의 절반 남짓 */
     min-width: 0;
-    margin-right: 8.0rem;             /* 글 칸 전체를 왼쪽으로 옮김. 키운 만큼 글과 이미지가 함께 왼쪽으로 이동 */
-    padding-left: 0rem;             /* 글 왼쪽 여백. 키우면 글의 왼쪽 끝이 오른쪽으로 들어옴 (이미지와 더 떨어짐) */
-    padding-right: 2rem;            /* 글 오른쪽 여백. 키우면 글의 오른쪽 끝이 왼쪽으로 들어옴 */
+    margin-right: 0;                /* 글 칸을 카드 오른쪽 끝에 붙임 → 상단 바 메뉴 끝과 정렬 */
+    padding: 0;
 }
 .post-thumb {
     flex: 1 1 auto;                 /* 이미지 칸: 글 칸과 gap 을 뺀 나머지 전부. 이미지는 이 칸의 오른쪽(글 쪽)에 붙음 */
@@ -267,7 +279,7 @@ body {
 /* 좁은 화면(모바일): 이미지 위, 글 아래로 쌓고 이미지는 16:9 */
 @media (max-width: 576px) {
     .post-with-thumb { flex-direction: column; }
-    .post-with-thumb .post-text { flex: none; padding-left: 0; padding-right: 0; margin-right: 0; }
+    .post-with-thumb .post-text { flex: none; }
     .post-thumb      { flex: none; aspect-ratio: 16 / 9; }
     .post-thumb img  { position: static; }
 }

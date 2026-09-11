@@ -1,5 +1,6 @@
 {# Ported from blog/templates/nav.html. Login/Admin menu removed (static site). #}
 <nav class="navbar navbar-expand navbar-dark bg-primary">
+ <div class="navbar-inner">
   <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}{% if SITESUBTITLE %}<span class="navbar-sep">|</span><span class="navbar-tagline">{{ SITESUBTITLE }}</span>{% endif %}</a>
   <div class="navbar-nav-scroll ml-auto" id="navbarColor01">
     <ul class="navbar-nav">
@@ -24,4 +25,5 @@
       <input class="form-control mr-sm-2 my-lg-0" type="search" id="search-input" name="q" autocomplete="off" placeholder="Search by keyword">
     </form>
   </div>
+ </div>
 </nav>

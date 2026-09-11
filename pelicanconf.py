@@ -19,6 +19,11 @@ DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 THEME = 'theme/tiny-blogger'
 THEME_STATIC_DIR = 'static'
 
+# style.css 링크 뒤에 ?v=<빌드 시각> 을 붙여 배포마다 새 CSS 를 받게 한다.
+# (GitHub Pages 는 CSS 를 10분 캐시하므로, 이게 없으면 새 HTML + 옛 CSS 조합이 생긴다)
+import time
+ASSET_VERSION = str(int(time.time()))
+
 # --- URL scheme: same as tiny-blogger (/<category>/<slug>/ and /<category>/) ---
 ARTICLE_URL = '{category}/{slug}/'
 ARTICLE_SAVE_AS = '{category}/{slug}/index.html'
