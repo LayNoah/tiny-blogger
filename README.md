@@ -12,6 +12,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## 미리보기
+
+```bash
+source .venv/bin/activate
+pelican content -s pelicanconf.py -r -l
+# http://127.0.0.1:8000   (저장하면 자동 반영, Ctrl+C 로 종료)
+```
+
+
 ## 새 글 쓰기
 
 ```bash
@@ -62,13 +71,7 @@ def hello():
 ```
 ````
 
-## 미리보기
 
-```bash
-source .venv/bin/activate
-pelican content -s pelicanconf.py -r -l
-# http://127.0.0.1:8000   (저장하면 자동 반영, Ctrl+C 로 종료)
-```
 
 ## 배포
 
@@ -87,4 +90,4 @@ git push
 | 글 수정 | `vi content/posts/파일명.md` |
 | 글 삭제 | `git rm content/posts/파일명.md` |
 | About 페이지 수정 | `vi content/pages/about.md` |
-| 블로그 이름·작성자 | `vi +/SITENAME pelicanconf.py` |
+| 블로그 이름·부제·작성자 | `vi +/SITENAME pelicanconf.py` |

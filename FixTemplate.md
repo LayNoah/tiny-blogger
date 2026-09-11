@@ -36,6 +36,9 @@ git push
 | 바꾸고 싶은 것 | 명령 | 고칠 줄 |
 | --- | --- | --- |
 | 블로그 이름 (Noah.md) | `vi +/SITENAME pelicanconf.py` | `SITENAME = "Noah.md"` |
+| 부제 (Talk is cheap...) 문구 | `vi +/SITESUBTITLE pelicanconf.py` | `SITESUBTITLE = "..."` (비우면 숨김) |
+| 부제 굵기·크기·자간 | `vi +/navbar-tagline theme/tiny-blogger/static/css/style.css` | `font-weight` `font-size` `letter-spacing` |
+| 구분 기호 `\|` 좌우 간격 (Noah.md↔`\|`, `\|`↔Talk) | `vi +/navbar-sep theme/tiny-blogger/static/css/style.css` | `margin-left` `margin-right` |
 | 작성자 이름 (푸터 ©) | `vi +/AUTHOR pelicanconf.py` | `AUTHOR = '...'` |
 | 상단 바 배경색 | `vi +/color-accent theme/tiny-blogger/static/css/style.css` | `--color-accent: #E35336;` |
 | 카테고리(General) 글자색 | `vi +/color-category theme/tiny-blogger/static/css/style.css` | `--color-category: #000000;` |
@@ -44,12 +47,13 @@ git push
 | 전체 글꼴 | `vi +/font-main: theme/tiny-blogger/static/css/style.css` | `--font-main: "NanumSquare", ...` |
 | 블로그 이름 크기·굵기·자간·여백 | `vi '+/3-2\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` `letter-spacing` `margin-left` `margin-top` |
 | 메뉴(About/Categories/Search) 크기·오른쪽 여백 | `vi '+/3-3\.' theme/tiny-blogger/static/css/style.css` | `font-size` `margin-top` `margin-right` |
-| 본문 폭 (한 줄 글자수) | `vi +/max-width theme/tiny-blogger/static/css/style.css` | `max-width: 50rem;` |
+| 글 상세 페이지 폭 (한 줄 글자수) | `vi +/max-width theme/tiny-blogger/static/css/style.css` | `max-width: 50rem;` |
+| 첫 화면 카드(글+이미지) 폭 | `vi +/content-home theme/tiny-blogger/static/css/style.css` | `max-width: 70rem;` |
 | 카테고리(General) 크기·굵기 | `vi '+/5-1\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
 | 글 제목(Hello, World!) 크기·굵기 | `vi '+/5-2\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
 | 본문 글 크기·굵기·줄간격 | `vi '+/5-3\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` `line-height` |
 | 날짜(2026-09-11) 크기·굵기 | `vi '+/5-4\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
-| 대표 이미지 비율·위치·잘림 | `vi +/post-with-thumb theme/tiny-blogger/static/css/style.css` | `flex: 0 0 50%` `row-reverse` `object-fit` |
+| 대표 이미지 폭·위치·잘림 | `vi +/post-with-thumb theme/tiny-blogger/static/css/style.css` | `flex: 0 0 30rem` `gap` `margin-right` `padding-left` `padding-right` `row-reverse` `object-fit` |
 | 첫 화면 글 순서 (카테고리→제목→본문→날짜) | `vi theme/tiny-blogger/templates/_article_list.html` | 블록 통째로 옮기기 (아래 4번) |
 | 메뉴 순서·항목 추가 | `vi +/nav-item theme/tiny-blogger/templates/nav.html` | `<li>...</li>` 블록 (아래 5번) |
 | 푸터 문구 | `vi theme/tiny-blogger/templates/footer.html` | `<small>` 안 (아래 6번) |
@@ -197,7 +201,11 @@ vi +/post-with-thumb theme/tiny-blogger/static/css/style.css
 
 | 원하는 것 | 고칠 줄 |
 | --- | --- |
-| 이미지 폭 줄이기 (글 60% / 이미지 40%) | `flex: 0 0 50%;` → `flex: 0 0 40%;` |
+| 글 칸 폭 (이미지는 나머지 전부) | `.post-text` 의 `flex: 0 0 30rem;` 숫자. 키우면 글이 왼쪽으로 넓어짐 |
+| 글 전체를 왼쪽으로 옮기기 | `.post-text` 의 `margin-right: 0rem;` 숫자. 예) 3rem |
+| 글 왼쪽 여백 (왼쪽 끝을 오른쪽으로) | `.post-text` 의 `padding-left: 0rem;` 숫자 |
+| 글 오른쪽 여백 (오른쪽 끝을 왼쪽으로) | `.post-text` 의 `padding-right: 7rem;` 숫자 |
+| 이미지 ↔ 글 간격 (글은 제자리, 이미지가 왼쪽으로 이동) | `gap: 1.5rem;` 숫자 |
 | 이미지를 오른쪽으로 | `flex-direction: row-reverse;` → `row` |
 | 빈 공간 없이 칸 꽉 채우기 (대신 잘림) | `object-fit: contain;` → `cover` |
 

@@ -31,7 +31,7 @@
 {% block nav %}
   {% include 'nav.html' %}
 {% endblock %}
-<section class="content container">
+<section class="content container{% block content_class %}{% endblock %}">
   <header>
     {% block header %}{% endblock %}
   </header>

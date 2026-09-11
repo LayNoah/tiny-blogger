@@ -1,6 +1,6 @@
 {# Ported from blog/templates/nav.html. Login/Admin menu removed (static site). #}
 <nav class="navbar navbar-expand navbar-dark bg-primary">
-  <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}</a>
+  <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}{% if SITESUBTITLE %}<span class="navbar-sep">|</span><span class="navbar-tagline">{{ SITESUBTITLE }}</span>{% endif %}</a>
   <div class="navbar-nav-scroll ml-auto" id="navbarColor01">
     <ul class="navbar-nav">
       {% for p in pages %}

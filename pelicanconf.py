@@ -4,6 +4,7 @@
 
 AUTHOR = 'Noah Seongjin Hwang'
 SITENAME = "Noah.md"
+SITESUBTITLE = "Code is cheap. Show me the Philosophy."   # 상단 바 제목 옆 부제. 비우면 표시 안 됨
 SITEURL = ''            # empty for local preview; publishconf.py sets the real URL
 
 PATH = 'content'
