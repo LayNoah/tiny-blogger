@@ -5,7 +5,7 @@ Slug: hello-world
 
 This is the first post of a blog built with the **tiny-blogger** look, published as a static site on GitHub Pages.
 
-Write posts as Markdown files in `site/content/posts/`. Each file starts with a metadata block:
+Write posts as Markdown files in `content/posts/`. Each file starts with a metadata block:
 
 ```markdown
 Title: 글 제목

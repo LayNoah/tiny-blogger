@@ -5,7 +5,6 @@ Pelican 정적 블로그. `master`에 push하면 GitHub Actions가 빌드해서 
 ## 처음 한 번 (로컬 미리보기용)
 
 ```bash
-cd site
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -14,8 +13,6 @@ pip install -r requirements.txt
 ## 글 쓰기
 
 ```bash
-cd site
-source .venv/bin/activate
 vi content/posts/2026-09-11-my-post.md
 ```
 
@@ -37,13 +34,12 @@ Slug: my-post
 ## 글 수정
 
 ```bash
-vi site/content/posts/<파일명>.md
+vi content/posts/<파일명>.md
 ```
 
 ## 로컬에서 확인
 
 ```bash
-cd site
 source .venv/bin/activate
 pelican content -s pelicanconf.py -r -l
 # http://127.0.0.1:8000  (Ctrl+C 로 종료)
@@ -52,7 +48,7 @@ pelican content -s pelicanconf.py -r -l
 ## 배포 (commit + push)
 
 ```bash
-git add site/content
+git add content
 git commit -m "Post: 글 제목"
 git push
 ```
@@ -62,7 +58,7 @@ push 후 1~2분 뒤 https://laynoah.github.io/tiny-blogger/ 에 반영된다.
 
 ## 설정
 
-`site/pelicanconf.py`
+`pelicanconf.py`
 
 | 항목 | 값 |
 | --- | --- |
@@ -74,8 +70,8 @@ push 후 1~2분 뒤 https://laynoah.github.io/tiny-blogger/ 에 반영된다.
 ## 파일 위치
 
 ```
-site/content/posts/     글
-site/content/pages/     About 등 고정 페이지
-site/content/images/    이미지
-site/theme/tiny-blogger/  테마 (템플릿, CSS)
+content/posts/        글
+content/pages/        About 등 고정 페이지
+content/images/       이미지
+theme/tiny-blogger/   테마 (템플릿, CSS)
 ```
