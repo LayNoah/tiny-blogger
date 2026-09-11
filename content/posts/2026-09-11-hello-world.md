@@ -2,6 +2,7 @@ Title: Hello, World!
 Date: 2026-09-11 13:00
 Category: General
 Slug: hello-world
+Image: https://lh3.googleusercontent.com/d/1gXTpc740_ji4eCywUtODs6ZMfqpSTjzB=w800-rw
 
 This is the first post of a blog built with the **tiny-blogger** look, published as a static site on GitHub Pages.
 

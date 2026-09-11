@@ -1,179 +1,279 @@
-# 템플릿 수정 가이드
+# 블로그 모양 바꾸기 — 명령어 가이드
 
-테마 파일은 `theme/tiny-blogger/` 아래에 있다. 수정 후 `pelican content -s pelicanconf.py -r -l` 로 미리 보고(`-r`이 템플릿/CSS 변경도 자동 반영), 마음에 들면 commit + push.
-
-| 바꾸고 싶은 것 | 파일 |
-| --- | --- |
-| 블로그 제목 텍스트, 작성자 | `pelicanconf.py` (`SITENAME`, `AUTHOR`) |
-| 제목 위치, 메뉴(About/Categories/Search) 위치·순서 | `theme/tiny-blogger/templates/nav.html` |
-| 제목 라인(상단 바) 색, 글씨 크기, 글씨체 | `theme/tiny-blogger/static/css/style.css` |
-| 푸터 문구 | `theme/tiny-blogger/templates/footer.html` |
-| 글 목록 배치 | `theme/tiny-blogger/templates/_article_list.html` |
-| 글 상세 페이지 배치 | `theme/tiny-blogger/templates/article.html` |
-| 본문 폭, 외부 폰트 로드 | `theme/tiny-blogger/templates/base.html` |
-
-Bootstrap은 **Bootswatch Lumen 4.6** 테마다(기본 색 `#158cba`, 기본 글꼴 Source Sans Pro). Bootstrap 클래스 이름은 https://getbootstrap.com/docs/4.6/ 에서 찾으면 된다. `style.css`는 `bootstrap.min.css` 뒤에 로드되므로 여기에 쓴 규칙이 Bootstrap을 덮어쓴다. 안 먹으면 `!important`를 붙인다.
-
----
-
-## 1. 제목(블로그 이름) 위치
-
-`nav.html` 2~3행:
-
-```html
-<nav class="navbar navbar-expand flex-column navbar-dark bg-primary">
-  <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}</a>
-```
-
-- **제목 아래에 메뉴가 오는 현재 형태**: `flex-column` (기본값)
-- **제목과 메뉴를 한 줄로 (제목 왼쪽, 메뉴 오른쪽)**: `flex-column` 삭제
-  ```html
-  <nav class="navbar navbar-expand navbar-dark bg-primary">
-  ```
-  메뉴를 오른쪽 끝으로 붙이려면 4행 `<div class="navbar-nav-scroll" id="navbarColor01">` 에 `ml-auto` 를 추가한다(`<ul>`에 붙이면 부모 div가 flex 자식이 아니어서 효과가 없다).
-  ```html
-  <div class="navbar-nav-scroll ml-auto" id="navbarColor01">
-  ```
-- **제목만 가운데 정렬**: `style.css`에 추가
-  ```css
-  .navbar-brand { margin: 0 auto; }
-  ```
-- **제목 글씨 크기**: `style.css`에 추가
-  ```css
-  .navbar-brand { font-size: 1.75rem; font-weight: 700; }
-  ```
-
-## 2. 글씨 크기 / 글씨체
-
-`style.css` 맨 위 `body { ... }` 블록을 고친다.
-
-```css
-body {
-    font-size: 1.0625rem;      /* 본문 크기. 1rem = 16px */
-    line-height: 1.8;          /* 줄 간격 */
-    font-family: "Noto Sans KR", "Source Sans Pro", sans-serif;
-}
-```
-
-외부 폰트(예: Noto Sans KR, Pretendard)를 쓰려면 `base.html` `<head>` 안, `style.css` `<link>` **앞**에 한 줄 추가:
-
-```html
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-```
-
-부분별 크기는 `style.css`에 선택자별로 추가:
-
-```css
-.post h2 { font-size: 1.5rem; }        /* 글 제목 (목록·상세 공통) */
-.post .body { font-size: 1rem; }       /* 글 본문 */
-.navbar .nav-link { font-size: 0.95rem; } /* 메뉴 글씨 */
-```
-
-## 3. 제목 라인(상단 바) 색
-
-방법 A: Bootstrap 색 클래스 교체. `nav.html` 2행의 `bg-primary`를 바꾼다.
-`bg-dark`, `bg-secondary`, `bg-success`, `bg-info`, `bg-warning`, `bg-danger`, `bg-light`, `bg-white`
-밝은 배경(`bg-light`, `bg-white`)을 쓸 때는 글씨가 보이도록 `navbar-dark` → `navbar-light`.
-
-방법 B: 원하는 색을 직접 지정. `style.css`에 추가.
-
-```css
-.navbar { background-color: #2c3e50 !important; }          /* 바 배경 */
-.navbar-brand { color: #ffffff !important; }               /* 제목 색 */
-.navbar .nav-link { color: rgba(255,255,255,.85) !important; } /* 메뉴 색 */
-.navbar .nav-link:hover { color: #ffffff !important; }
-```
-
-글 제목(`text-primary`)이나 링크 색까지 한 번에 바꾸려면 Bootstrap 변수 대신 직접 덮어쓴다.
-
-```css
-a, .text-primary { color: #2c3e50 !important; }
-```
-
-## 4. About / Categories / Search 위치·순서
-
-`nav.html`의 `<ul class="navbar-nav mr-auto">` 안에 `<li class="nav-item">` 블록 3개가 순서대로 About(7~10행, `pages` 반복문), Categories(11~18행), Search(19~21행)다.
-
-- **순서 바꾸기**: `<li> ... </li>` 블록을 잘라 원하는 순서로 붙여 넣는다.
-- **오른쪽 정렬**: `mr-auto` → `ml-auto`. **가운데 정렬**: `mr-auto` → `mx-auto`.
-- **일부만 오른쪽으로 보내기**: `<ul>`을 두 개로 나눈다.
-  ```html
-  <ul class="navbar-nav mr-auto">   <!-- 왼쪽: About, Categories -->
-    ...
-  </ul>
-  <ul class="navbar-nav ml-auto">   <!-- 오른쪽: Search -->
-    ...
-  </ul>
-  ```
-- **메뉴 사이 간격**: `style.css`에 `.navbar .nav-item { margin: 0 .75rem; }`
-- **Categories를 드롭다운 대신 펼쳐서 나열**: 11~18행을 아래로 교체
-  ```html
-  {% for cat, cat_articles in categories %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{ SITEURL }}/{{ cat.url }}">{{ cat.name }}</a>
-  </li>
-  {% endfor %}
-  ```
-- **메뉴 항목 추가** (예: GitHub 링크): `<li>` 하나 복사해서 `href`와 텍스트만 바꾼다.
-- **About 등 고정 페이지 순서**: `content/pages/*.md` 파일에 `Order: 1` 같은 메타데이터를 넣고 `pelicanconf.py`에 `PAGE_ORDER_BY = 'order'` 추가.
-
-## 5. 푸터 문구
-
-`footer.html` 전체:
-
-```html
-<footer class="text-center pb-5">
-  <small class="text-muted">
-    ©&nbsp;<span class="text-dark">{{ AUTHOR }}</span>&nbsp;&nbsp;·&nbsp;&nbsp;Created with <a ...>tiny-blogger</a> &amp; <a ...>Pelican</a>
-  </small>
-</footer>
-```
-
-- 작성자 이름은 `pelicanconf.py`의 `AUTHOR`.
-- 문구를 바꾸려면 `<small>` 안을 통째로 원하는 HTML로 교체. 예:
-  ```html
-  <small class="text-muted">© 2026 {{ AUTHOR }}. All rights reserved.</small>
-  ```
-- 위치: `text-center` → `text-left` / `text-right`. 여백: `pb-5` 숫자(0~5) 조절.
-
-## 6. 글 배치
-
-### 목록 페이지 (`_article_list.html`)
-
-글 하나가 `<article class="post">` 블록이다. 기본 구조는 제목 → 날짜·카테고리 → 요약.
-
-- **날짜를 제목 위로**: `<div class="text-muted">...</div>` 블록을 `<h2>` 앞으로 이동.
-- **요약 길이**: `truncate()` → `truncate(120)` (글자 수). 요약 대신 전체 본문을 보이려면 `pelicanconf.py`의 `POSTS_TRUNCATE = False`.
-- **글 사이 구분선 제거**: `{% if not loop.last %}<hr>{% endif %}` 삭제.
-- **카드 형태로**: `<article class="post">` → `<article class="post card mb-4">` 로 바꾸고 `<header>`와 `<p class="body">`를 `<div class="card-body">` 로 감싼다.
-- **2열 그리드**: 반복문 바깥을 `<div class="row">` 로 감싸고 `<article class="post col-md-6">`.
-- **한 페이지에 보이는 글 수**: `pelicanconf.py`의 `DEFAULT_PAGINATION`.
-- **정렬 순서**: 기본은 최신순. 오래된 글부터 보이려면 `pelicanconf.py`에 `ARTICLE_ORDER_BY = 'date'`.
-
-### 상세 페이지 (`article.html`)
-
-- 제목 색: `<h2 class="text-primary">` 의 `text-primary` 를 `text-dark` 등으로.
-- 작성자 표시 제거: `<strong>{{ article.author or AUTHOR }}</strong> &nbsp;on&nbsp;` 삭제.
-- 본문 위/아래 여백: `style.css`의 `.body { margin: 1rem 0; }`.
-
-### 본문 폭 (`base.html`)
-
-```html
-<section class="content container" style="padding: 1rem 1.75rem; max-width: 50rem;">
-```
-
-`max-width` 숫자를 바꾼다. 넓게 `60rem`, 좁게 `42rem`.
-
----
-
-## 확인하고 배포
+모든 명령은 저장소 루트에서 실행한다.
 
 ```bash
-source .venv/bin/activate
-pelican content -s pelicanconf.py -r -l      # http://127.0.0.1:8000 에서 확인
-git add theme pelicanconf.py
-git commit -m "Tweak theme"
-git push
+cd ~/test/tiny-blogger
 ```
 
-브라우저에 이전 CSS가 남아 있으면 Ctrl+Shift+R 로 강제 새로고침.
+---
+
+## 0. 기본 흐름 (항상 이 순서)
+
+```bash
+# 1) 미리보기 서버 켜기 (한 번만. 파일을 고치면 자동 반영됨)
+source .venv/bin/activate
+pelican content -s pelicanconf.py -r -l
+#    → 브라우저에서 http://127.0.0.1:8000  (이전 모양이 남아 있으면 Ctrl+Shift+R)
+
+# 2) 아래 표에서 원하는 항목의 명령을 실행해 파일을 열고, 값을 고치고, :wq
+
+# 3) 마음에 들면 배포
+git add -A
+git commit -m "Tweak theme"
+git push
+#    → 1~2분 뒤 https://laynoah.github.io/tiny-blogger/ 반영
+```
+
+미리보기 서버 끄기: `Ctrl+C`
+
+---
+
+## 1. 빠른 찾기표
+
+`vi +/검색어 파일` 은 그 검색어가 있는 줄에서 바로 열린다. 열린 뒤 `n` 을 누르면 다음 검색 결과로 이동.
+
+| 바꾸고 싶은 것 | 명령 | 고칠 줄 |
+| --- | --- | --- |
+| 블로그 이름 (Noah.md) | `vi +/SITENAME pelicanconf.py` | `SITENAME = "Noah.md"` |
+| 작성자 이름 (푸터 ©) | `vi +/AUTHOR pelicanconf.py` | `AUTHOR = '...'` |
+| 상단 바 배경색 | `vi +/color-accent theme/tiny-blogger/static/css/style.css` | `--color-accent: #E35336;` |
+| 카테고리(General) 글자색 | `vi +/color-category theme/tiny-blogger/static/css/style.css` | `--color-category: #000000;` |
+| 글 제목(Hello, World!) 글자색 | `vi +/color-title theme/tiny-blogger/static/css/style.css` | `--color-title: #000000;` |
+| 날짜(2026-09-11) 글자색 | `vi +/color-date theme/tiny-blogger/static/css/style.css` | `--color-date: #000000;` |
+| 전체 글꼴 | `vi +/font-main: theme/tiny-blogger/static/css/style.css` | `--font-main: "NanumSquare", ...` |
+| 블로그 이름 크기·굵기·자간·여백 | `vi '+/3-2\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` `letter-spacing` `margin-left` `margin-top` |
+| 메뉴(About/Categories/Search) 크기·오른쪽 여백 | `vi '+/3-3\.' theme/tiny-blogger/static/css/style.css` | `font-size` `margin-top` `margin-right` |
+| 본문 폭 (한 줄 글자수) | `vi +/max-width theme/tiny-blogger/static/css/style.css` | `max-width: 50rem;` |
+| 카테고리(General) 크기·굵기 | `vi '+/5-1\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
+| 글 제목(Hello, World!) 크기·굵기 | `vi '+/5-2\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
+| 본문 글 크기·굵기·줄간격 | `vi '+/5-3\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` `line-height` |
+| 날짜(2026-09-11) 크기·굵기 | `vi '+/5-4\.' theme/tiny-blogger/static/css/style.css` | `font-size` `font-weight` |
+| 대표 이미지 비율·위치·잘림 | `vi +/post-with-thumb theme/tiny-blogger/static/css/style.css` | `flex: 0 0 50%` `row-reverse` `object-fit` |
+| 첫 화면 글 순서 (카테고리→제목→본문→날짜) | `vi theme/tiny-blogger/templates/_article_list.html` | 블록 통째로 옮기기 (아래 4번) |
+| 메뉴 순서·항목 추가 | `vi +/nav-item theme/tiny-blogger/templates/nav.html` | `<li>...</li>` 블록 (아래 5번) |
+| 푸터 문구 | `vi theme/tiny-blogger/templates/footer.html` | `<small>` 안 (아래 6번) |
+| 한 페이지 글 개수 | `vi +/DEFAULT_PAGINATION pelicanconf.py` | `DEFAULT_PAGINATION = 5` |
+| 요약 대신 본문 전체 | `vi +/POSTS_TRUNCATE pelicanconf.py` | `POSTS_TRUNCATE = False` |
+
+---
+
+## 2. 색
+
+`style.css` 맨 위 `2. 공통 설정` 의 변수 4개만 고친다. 색은 `#RRGGBB` 6자리.
+
+```bash
+vi +/color-accent theme/tiny-blogger/static/css/style.css
+```
+
+```css
+--color-accent:   #E35336;  /* 상단 바 배경 + 링크에 마우스 올렸을 때 */
+--color-category: #000000;  /* General */
+--color-title:    #000000;  /* Hello, World! */
+--color-date:     #000000;  /* 2026-09-11 */
+```
+
+상단 바 글자색(흰색)은 `3-2` 의 `color: #ffffff` (블로그 이름), `3-3` 의 `color: rgba(255,255,255,0.85)` (메뉴).
+상단 바 아래 선을 다시 넣으려면 `3-1` 의 `border: 0 !important;` 줄을 지운다.
+
+---
+
+## 3. 글꼴
+
+### 전체 글꼴 바꾸기
+
+```bash
+vi +/font-main: theme/tiny-blogger/static/css/style.css
+```
+
+```css
+--font-main: "NanumSquare", "Pretendard", sans-serif;   /* 첫 번째 이름만 바꾼다 */
+```
+
+바로 쓸 수 있는 이름과 지원 굵기 (`2. 공통 설정` 주석에도 있음):
+
+| 이름 | 느낌 | 굵기 |
+| --- | --- | --- |
+| `"NanumSquare"` | 나눔스퀘어. 저장소에 포함 | 300 400 700 800 |
+| `"Pretendard"` | 곧고 깔끔한 고딕 | 100~900 |
+| `"Noto Sans KR"` | 무난한 고딕 | 300 400 700 |
+| `"IBM Plex Sans KR"` | 고딕, 영문 폭 넓음 | 300 400 700 |
+| `"Nanum Gothic"` | 고딕 | 400 700 |
+| `"Gowun Dodum"` | 둥근 고딕 | 400 |
+| `"Nanum Myeongjo"` | 명조 | 400 700 |
+| `"Gowun Batang"` | 바탕 | 400 700 |
+
+### 특정 부분만 다른 글꼴
+
+해당 섹션(예: 글 제목은 `5-2`)을 열고 `font-family: var(--font-main);` 을 `font-family: "Gowun Batang", serif;` 처럼 직접 적는다.
+
+```bash
+vi '+/5-2\.' theme/tiny-blogger/static/css/style.css
+```
+
+### 굵기
+
+각 섹션의 `font-weight` 숫자. 300 가늘게, 400 보통, 700 굵게. 글꼴이 지원하지 않는 굵기는 가장 가까운 값으로 표시된다.
+
+### 내 PC 글꼴 파일(ttf/otf) 추가
+
+```bash
+# 1) 파일 넣기 (예: MyFont-Light.ttf, MyFont-Regular.ttf)
+cp ~/Downloads/MyFont-*.ttf theme/tiny-blogger/static/fonts/
+
+# 2) 등록 줄 추가. 기존 줄을 복사해 파일명과 굵기만 바꾼다
+vi +/@font-face theme/tiny-blogger/static/css/style.css
+```
+
+```css
+@font-face { font-family: "MyFont"; font-weight: 300; font-display: swap; src: url("../fonts/MyFont-Light.ttf"); }
+@font-face { font-family: "MyFont"; font-weight: 400; font-display: swap; src: url("../fonts/MyFont-Regular.ttf"); }
+```
+
+```bash
+# 3) 글꼴 이름을 --font-main 첫 번째에
+vi +/font-main: theme/tiny-blogger/static/css/style.css
+```
+
+(선택) 용량을 1/3로 줄이려면 ttf → woff2 변환 후 `url("../fonts/MyFont-Light.woff2") format("woff2")` 로:
+
+```bash
+pip install fonttools brotli
+python3 - <<'PY'
+from fontTools.ttLib import TTFont
+import glob
+for path in glob.glob("theme/tiny-blogger/static/fonts/*.ttf"):
+    font = TTFont(path)
+    font.flavor = "woff2"
+    font.save(path[:-4] + ".woff2")
+PY
+```
+
+### 정한 뒤 정리 (로딩 속도)
+
+안 쓰는 외부 글꼴은 `base.html` 에서 지운다.
+
+```bash
+vi +/fonts.googleapis theme/tiny-blogger/templates/base.html
+```
+
+`&family=이름:wght@...` 항목 중 안 쓰는 것을 지우고, Pretendard 를 안 쓰면 `pretendard.min.css` 줄도 지운다.
+
+---
+
+## 4. 첫 화면 글 배치
+
+```bash
+vi theme/tiny-blogger/templates/_article_list.html
+```
+
+글 한 편은 아래 4개 블록으로 되어 있다. 순서를 바꾸려면 블록을 통째로 잘라(`V` 로 줄 선택 → `d`) 원하는 자리에 붙인다(`p`).
+
+```html
+<div class="post-meta post-category"> ... </div>   <!-- General -->
+<h2> ... </h2>                                      <!-- Hello, World! -->
+<p class="body"> ... </p>                           <!-- 본문 요약 -->
+<div class="post-meta post-date"> ... </div>        <!-- 2026-09-11 -->
+```
+
+### 대표 이미지 (글 절반 + 이미지 절반)
+
+글 md 파일 메타데이터에 `Image:` 한 줄 추가. 없는 글은 전체 폭으로 표시된다.
+
+```bash
+vi +/Slug content/posts/2026-09-11-hello-world.md
+```
+
+```markdown
+Slug: hello-world
+Image: https://lh3.googleusercontent.com/d/파일ID=w800-rw
+```
+
+이미지 칸 조절:
+
+```bash
+vi +/post-with-thumb theme/tiny-blogger/static/css/style.css
+```
+
+| 원하는 것 | 고칠 줄 |
+| --- | --- |
+| 이미지 폭 줄이기 (글 60% / 이미지 40%) | `flex: 0 0 50%;` → `flex: 0 0 40%;` |
+| 이미지를 오른쪽으로 | `flex-direction: row-reverse;` → `row` |
+| 빈 공간 없이 칸 꽉 채우기 (대신 잘림) | `object-fit: contain;` → `cover` |
+
+### 그 외
+
+| 원하는 것 | 명령 | 고칠 것 |
+| --- | --- | --- |
+| 요약 글자 수 | `vi +/truncate theme/tiny-blogger/templates/_article_list.html` | `truncate()` → `truncate(120)` |
+| 글 사이 구분선 제거 | `vi +/hr theme/tiny-blogger/templates/_article_list.html` | `<hr>` 줄 삭제 |
+| 오래된 글부터 | `vi pelicanconf.py` | 맨 아래에 `ARTICLE_ORDER_BY = 'date'` 추가 |
+
+---
+
+## 5. 상단 메뉴 (About / Categories / Search)
+
+```bash
+vi +/nav-item theme/tiny-blogger/templates/nav.html
+```
+
+`<li class="nav-item"> ... </li>` 블록 하나가 메뉴 하나다. 순서는 About(`pages` 반복문) → Categories → Search.
+
+| 원하는 것 | 방법 |
+| --- | --- |
+| 순서 바꾸기 | `<li>...</li>` 블록을 잘라 붙이기 |
+| 항목 추가 (예: GitHub) | `<li>` 하나 복사 후 `href` 와 글자만 바꾸기 |
+| 메뉴 사이 간격 | `style.css` `3-3` 에 `.navbar .nav-item { margin: 0 .75rem; }` 추가 |
+| 메뉴 전체 오른쪽 여백 | `style.css` `3-3` 의 `margin-right: 1rem;` |
+| 메뉴를 왼쪽(제목 옆)으로 | `nav.html` 4행 `<div class="navbar-nav-scroll ml-auto"` 에서 `ml-auto` 삭제 |
+| 블로그 이름을 정가운데로 | `style.css` `3-2` 아래 주석 처리된 `.navbar { position: relative; }` 블록의 `/*` `*/` 삭제 |
+
+---
+
+## 6. 푸터
+
+```bash
+vi theme/tiny-blogger/templates/footer.html
+```
+
+```html
+<small class="text-muted">
+  ©&nbsp;<span class="text-dark">{{ AUTHOR }}</span>      <!-- 이 줄을 원하는 문구로 -->
+</small>
+```
+
+예: `<small class="text-muted">© 2026 {{ AUTHOR }}. All rights reserved.</small>`
+정렬: `<footer class="text-center ...">` 의 `text-center` → `text-left` / `text-right`.
+
+---
+
+## 7. 글에 이미지 넣기 (구글 드라이브 링크)
+
+저장소에 이미지를 올리지 않고 링크만 건다.
+
+1. 드라이브에서 파일 우클릭 → 공유 → **링크가 있는 모든 사용자**
+2. 공유 링크 `https://drive.google.com/file/d/`**`파일ID`**`/view?...` 에서 파일ID 복사
+3. 글에 아래 형식으로 (공유 링크 그대로는 동작하지 않음)
+
+```markdown
+![설명](https://lh3.googleusercontent.com/d/파일ID=w800-rw)
+```
+
+- `w800` = 가로 800px 로 축소, `-rw` = webp 변환. 이 둘로 용량이 1/3, 로딩이 절반 이하가 된다.
+- 폭 기준: 첫 화면 대표 이미지 `w800`, 본문 안 이미지 `w1600`.
+- 드라이브에서 파일을 지우거나 공유를 끄면 글에서도 깨진다.
+
+---
+
+## 8. 자주 쓰는 vi 조작
+
+| 키 | 동작 |
+| --- | --- |
+| `i` | 입력 시작 |
+| `Esc` | 입력 종료 |
+| `/글자` → `Enter` | 검색. `n` 다음, `N` 이전 |
+| `V` → 화살표 → `d` | 줄 범위 잘라내기 |
+| `p` | 붙이기 |
+| `u` | 되돌리기 |
+| `:wq` | 저장하고 닫기 |
+| `:q!` | 저장 안 하고 닫기 |

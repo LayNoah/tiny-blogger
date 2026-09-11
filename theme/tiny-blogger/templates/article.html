@@ -6,13 +6,13 @@
   <article class="post">
     <header>
       <div>
-        <h2 class="text-primary">{{ article.title }}</h2>
-        <div class="text-muted">
+        <h2>{{ article.title }}</h2>
+        <div class="post-meta">
           <strong>{{ article.author or AUTHOR }}</strong>
           &nbsp;on&nbsp;
           {{ article.date.strftime('%Y-%m-%d') }}
           &nbsp;&nbsp;·&nbsp;&nbsp;
-          <a class="text-muted" href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
+          <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
         </div>
       </div>
     </header>

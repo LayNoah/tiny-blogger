@@ -1,31 +1,285 @@
+/* ==========================================================================
+   style.css — tiny-blogger 테마 사용자 설정
+
+   · bootstrap.min.css 뒤에 로드되므로 여기 값이 우선한다.
+   · 1rem = 16px.  값이 안 먹으면 !important 를 붙인다.
+   · 화면 위 → 아래 순서로 섹션을 배치했다.
+
+   목차
+     1. 글꼴 파일 등록      (나눔스퀘어 woff2)
+     2. 공통 설정           (글꼴, 색 — 각 섹션이 여기 값을 가져다 쓴다)
+     3. 상단 바             (배경 · 제목 Noah.md · 메뉴 About/Categories/Search)
+     4. 본문 영역 폭
+     5. 글 한 편            (카테고리 → 제목 → 본문 → 날짜 순서대로)
+     6. 목록 대표 이미지    (글 절반 + 이미지 절반)
+     7. 본문 안 요소        (이미지 · 코드)
+     8. 기타                (줄바꿈 규칙)
+   ========================================================================== */
+
+
+
+/* ==========================================================================
+   1. 글꼴 파일 등록
+   theme/tiny-blogger/static/fonts/ 의 나눔스퀘어. 굵기: L=300 R=400 B=700 EB=800
+   ========================================================================== */
+
+@font-face { font-family: "NanumSquare"; font-weight: 300; font-display: swap; src: url("../fonts/NanumSquareL.woff2")  format("woff2"); }
+@font-face { font-family: "NanumSquare"; font-weight: 400; font-display: swap; src: url("../fonts/NanumSquareR.woff2")  format("woff2"); }
+@font-face { font-family: "NanumSquare"; font-weight: 700; font-display: swap; src: url("../fonts/NanumSquareB.woff2")  format("woff2"); }
+@font-face { font-family: "NanumSquare"; font-weight: 800; font-display: swap; src: url("../fonts/NanumSquareEB.woff2") format("woff2"); }
+
+
+
+/* ==========================================================================
+   2. 공통 설정
+   아래 변수를 바꾸면 이 파일 전체에 적용된다.
+   특정 부분만 다르게 하려면 해당 섹션에서 var(...) 대신 값을 직접 적는다.
+
+   쓸 수 있는 글꼴 이름 (base.html 에서 불러옴):
+     "NanumSquare"       나눔스퀘어 (로컬). 300/400/700/800
+     "Pretendard"        곧고 깔끔한 고딕. 100~900 전 굵기
+     "Noto Sans KR"      깔끔한 고딕. 300/400/700
+     "IBM Plex Sans KR"  고딕, 영문 폭이 넓음. 300/400/700
+     "Nanum Gothic"      고딕. 400/700
+     "Gowun Dodum"       둥근 고딕. 400
+     "Nanum Myeongjo"    명조. 400/700
+     "Gowun Batang"      바탕. 400/700
+   글꼴을 정한 뒤 안 쓰는 것은 base.html <link> 에서 지우면 로딩이 빨라진다.
+   ========================================================================== */
+
+:root {
+    --font-main:    "NanumSquare", "Pretendard", sans-serif;   /* 전체 글꼴 */
+    --color-accent:   #E35336;  /* 강조색: 상단 바 배경, 링크에 마우스 올렸을 때 */
+    --color-category: #000000;  /* 카테고리(General) 글자색 */
+    --color-title:    #000000;  /* 글 제목(Hello, World!) 글자색 */
+    --color-date:     #000000;  /* 날짜(2026-09-11) 글자색 */
+}
+
 body {
-    font-size: 1rem;
-    line-height: 1.625;
+    font-family: var(--font-main);
+    font-weight: 400;
+    /* 크기(font-size)는 여기 넣지 않는다. 상단 바 메뉴까지 같이 커진다.
+       굵기·크기는 아래 섹션마다 따로 지정되어 있어 body 값은 그 외 나머지에만 적용된다. */
 }
 
+
+
+/* ==========================================================================
+   3. 상단 바
+   ========================================================================== */
+
+/* 3-1. 바 배경 ---------------------------------------------------------- */
+.navbar.bg-primary {
+    background-color: var(--color-accent) !important;   /* Bootstrap 기본 파랑을 덮어씀 */
+}
+.navbar {
+    border: 0 !important;       /* Lumen 테마가 넣는 바 아래 4px 선 제거. 선을 원하면 이 줄 삭제 */
+}
+
+/* 3-2. 블로그 제목 (Noah.md) ------------------------------------------- */
+.navbar-brand,
+.navbar-brand:hover {
+    font-family: var(--font-main);
+    font-weight: 800;           /* 굵기. NanumSquare: 300/400/700/800 */
+    font-size: 1.3rem;          /* 크기 */
+    color: #ffffff !important;  /* 글자색 */
+    letter-spacing: 0.07em;     /* 자간. 0 = 기본, 0.1em = 넓게, -0.02em = 좁게 */
+    white-space: nowrap;        /* 한 줄 유지 */
+    margin-left: 20rem;          /* 왼쪽 여백. 바 자체 여백(1rem)에 더해진다 */
+    margin-top: 2.0px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
+}
+
+/* 제목 글자 모양을 가로로 늘리려면 주석 해제. 1.1 = 10% 넓게 */
+/*
+.navbar-brand {
+    display: inline-block;
+    transform: scaleX(1.1);
+    transform-origin: left center;
+}
+*/
+
+/* 제목을 바 정가운데(가로)에 두려면 주석 해제. 메뉴는 오른쪽에 그대로 남는다 */
+/*
+.navbar { position: relative; }
+.navbar-brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-right: 0;
+}
+*/
+
+/* 3-3. 메뉴 (About / Categories / Search) ------------------------------ */
+.navbar .nav-link {
+    font-family: var(--font-main);
+    font-weight: 400;           /* 굵기 */
+    font-size: 1.1rem;          /* 크기 */
+    color: rgba(255, 255, 255, 0.85) !important;   /* 글자색 */
+    margin-top: 2.5px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
+}
+.navbar .navbar-nav-scroll {
+    margin-right: 20rem;         /* 메뉴 전체의 오른쪽 여백. 바 자체 여백(1rem)에 더해진다 */
+}
+.navbar .nav-link:hover {
+    color: #ffffff !important;  /* 마우스 올렸을 때 */
+}
+
+
+
+/* ==========================================================================
+   4. 본문 영역 폭
+   글씨 크기는 여기서 바꾸지 않는다 (5번에서 부분별로).
+   ========================================================================== */
+
+.content {
+    max-width: 50rem;           /* 본문 폭 = 한 줄 글자수. 넓게 60rem, 좁게 42rem */
+    padding: 1rem 1.75rem;      /* 상하 / 좌우 여백 */
+}
+
+
+
+/* ==========================================================================
+   5. 글 한 편
+   목록(첫 화면)과 상세 페이지 공통. 표시 순서대로 나열.
+   순서 자체를 바꾸려면 templates/_article_list.html 에서 블록을 옮긴다.
+   ========================================================================== */
+
+/* 5-0. 글 한 편 전체 여백 ----------------------------------------------- */
 .post {
-    margin: 1rem 0 2rem;
-    word-break: keep-all;
+    margin: 1rem 0 2rem;        /* 글 사이 위/아래 간격 */
 }
 
-span#post_slug {
-    word-break: break-word;
+/* 5-1. 카테고리 (General) — 제목 위 ------------------------------------- */
+.post .post-category,
+.post .post-category a {
+    font-family: var(--font-main);
+    font-weight: 400;           /* 굵기 */
+    font-size: 1rem;            /* 크기 */
+    color: var(--color-category);   /* 색. 2번 섹션 변수 대신 #코드를 직접 써도 됨 */
+    text-decoration: none;
+}
+.post .post-category a:hover { color: var(--color-accent); }
+.post .post-category         { margin-bottom: 0.25rem; }   /* 제목과의 간격 */
+
+/* 5-2. 글 제목 (Hello, World!) ------------------------------------------ */
+.post h2,
+.post h2 a {
+    font-family: var(--font-main);
+    font-weight: 700;           /* 굵기 */
+    font-size: 1.5rem;          /* 크기 */
+    color: var(--color-title);  /* 색 */
+    text-decoration: none;
+}
+.post h2 a:hover { color: var(--color-accent); }
+
+/* 5-3. 본문 (This is the first post...) --------------------------------- */
+.post .body {
+    font-family: var(--font-main);
+    font-weight: 300;           /* 굵기. 가늘게 300, 보통 400 */
+    font-size: 0.8rem;          /* 크기 */
+    line-height: 1.7;           /* 줄 간격 */
+    margin: 1rem 0;             /* 위/아래 여백 */
 }
 
-.body {
-    margin: 1rem 0;
+/* 5-4. 날짜 (2026-09-11) — 본문 아래 ------------------------------------ */
+.post .post-date {
+    font-family: var(--font-main);
+    font-weight: 300;           /* 굵기 */
+    font-size: 1rem;            /* 크기 */
+    color: var(--color-date);   /* 색 */
+    margin-top: 0.5rem;         /* 본문과의 간격 */
 }
 
-pre {
+/* 5-5. 상세 페이지 전용: 제목 아래 "작성자 on 날짜 · 카테고리" 한 줄 ---- */
+.post header .post-meta,
+.post header .post-meta a {
+    font-family: var(--font-main);
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--color-date);
+    text-decoration: none;
+}
+
+
+
+/* ==========================================================================
+   6. 목록 대표 이미지 (글 절반 + 이미지 절반)
+   글 md 에 `Image: URL` 이 있을 때만 적용. 이미지 칸 높이는 글 높이에 맞춰지므로
+   이미지가 커도 글 한 편의 세로 폭은 늘지 않는다.
+   ========================================================================== */
+
+.post-with-thumb {
+    display: flex;
+    flex-direction: row-reverse;    /* 이미지 왼쪽, 글 오른쪽. 글을 왼쪽으로 되돌리려면 row */
+    gap: 1.5rem;                    /* 글과 이미지 사이 간격 */
+    align-items: stretch;           /* 이미지 칸 높이 = 글 높이 */
+}
+.post-with-thumb .post-text {
+    flex: 1 1 50%;                  /* 글 폭 */
+    min-width: 0;
+}
+.post-thumb {
+    flex: 0 0 50%;                  /* 이미지 폭. 40% 로 줄이면 글이 60% */
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+.post-thumb img {
+    position: absolute;             /* 칸 높이에 영향을 주지 않게 떼어냄 */
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;            /* 잘림 없이 전체 표시(빈 공간 생길 수 있음). 칸을 꽉 채우려면 cover */
+    object-position: center;        /* 칸 안에서 이미지 위치. 예) top, left */
+}
+
+/* 좁은 화면(모바일): 이미지 위, 글 아래로 쌓고 이미지는 16:9 */
+@media (max-width: 576px) {
+    .post-with-thumb { flex-direction: column; }
+    .post-thumb      { flex: none; aspect-ratio: 16 / 9; }
+    .post-thumb img  { position: static; }
+}
+
+
+
+/* ==========================================================================
+   7. 본문 안 요소
+   ========================================================================== */
+
+/* 7-1. 본문 이미지 ------------------------------------------------------ */
+.post .body img {
     display: block;
-    padding: 1.5rem;
-    background-color: #EAEAEA;
+    max-width: 100%;            /* 본문 폭보다 크면 축소 */
+    height: auto;
+    margin: 1rem auto;          /* 위아래 여백, 가운데 정렬 */
     border-radius: 0.5rem;
 }
 
-code {
+/* 7-2. 코드 ------------------------------------------------------------- */
+pre {                           /* 여러 줄 코드 블록 */
+    display: block;
+    padding: 1.2rem;
+    background-color: #EAEAEA;
+    border-radius: 0.5rem;
+}
+code {                          /* 문장 속 `코드` */
     border: 1px solid #e83e8c;
     padding: 0.2em 0.3em;
     margin: 0 0.3em;
     border-radius: 0.3em;
+}
+
+
+
+/* ==========================================================================
+   8. 기타
+   ========================================================================== */
+
+.post {
+    word-break: keep-all;       /* 한글 단어 중간에서 줄바꿈 안 함 */
+    overflow-wrap: break-word;  /* 너무 긴 단어/URL 은 넘치지 않게 끊음 */
+}
+span#post_slug {
+    word-break: break-word;
 }

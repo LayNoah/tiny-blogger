@@ -1,21 +1,26 @@
-{# One <article> block per post, same markup as blog/templates/index.html. #}
+{# One <article> block per post. 글 md 에 `Image: URL` 을 넣으면 왼쪽 절반에 대표 이미지가 붙는다.
+   순서: 카테고리 → 제목 → 본문 → 날짜. 바꾸려면 아래 블록 순서를 옮긴다. #}
 {% for article in articles_page.object_list %}
-  <article class="post">
-    <header>
-      <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
-      <div class="text-muted">
-        {{ article.date.strftime('%Y-%m-%d') }}
-        &nbsp;&nbsp;·&nbsp;&nbsp;
-        <a class="text-muted" href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
+  <article class="post{% if article.image %} post-with-thumb{% endif %}">
+    <div class="post-text">
+      <div class="post-meta post-category">
+        <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
       </div>
-    </header>
-    <p class="body">
-    {% if POSTS_TRUNCATE %}
-      {{ article.summary|striptags|truncate() }}
-    {% else %}
-      {{ article.content }}
+      <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+      <p class="body">
+      {% if POSTS_TRUNCATE %}
+        {{ article.summary|striptags|truncate() }}
+      {% else %}
+        {{ article.content }}
+      {% endif %}
+      </p>
+      <div class="post-meta post-date">{{ article.date.strftime('%Y-%m-%d') }}</div>
+    </div>
+    {% if article.image %}
+    <a class="post-thumb" href="{{ SITEURL }}/{{ article.url }}">
+      <img src="{{ article.image }}" alt="{{ article.title }}" loading="lazy" decoding="async">
+    </a>
     {% endif %}
-    </p>
   </article>
   {% if not loop.last %}
     <hr>
