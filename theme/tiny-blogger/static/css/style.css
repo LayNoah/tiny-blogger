@@ -11,7 +11,7 @@
      3. 상단 바             (배경 · 제목 Noah.md · 메뉴 About/Categories/Search)
      4. 본문 영역 폭
      5. 글 한 편            (카테고리 → 제목 → 본문 → 날짜 순서대로)
-     6. 목록 대표 이미지    (글 절반 + 이미지 절반)
+     6. 목록 대표 이미지    (글 절반 + 이미지 절반, 6-0 그룹 좌우 여백)
      7. 본문 안 요소        (이미지 · 코드)
      8. 기타                (줄바꿈 규칙)
    ========================================================================== */
@@ -96,7 +96,7 @@ body {
     letter-spacing: 0.07em;     /* 자간. 0 = 기본, 0.1em = 넓게, -0.02em = 좁게 */
     white-space: nowrap;        /* 한 줄 유지 */
     margin-left: 0;             /* 왼쪽 여백. 정렬은 .navbar-inner 가 맡으므로 0 */
-    margin-top: 2.0px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
+    margin-top: 1.0px;          /* 세로 미세 조정. 음수 = 위로, 양수 = 아래로 */
 }
 
 /* 3-2-1. 구분 기호 ( | ) — 좌우 간격을 각각 지정 */
@@ -243,6 +243,24 @@ body {
    글 md 에 `Image: URL` 이 있을 때만 적용. 이미지 칸 높이는 글 높이에 맞춰지므로
    이미지가 커도 글 한 편의 세로 폭은 늘지 않는다.
    ========================================================================== */
+
+/* 6-0. 그림 슬라이드 + 글 슬라이드 묶음(그룹)의 좌우 여백 ------------------
+   .post-with-thumb 가 그림 칸(.post-thumb)과 글 칸(.post-text)을 한 덩어리로
+   감싸는 그룹이다. 아래 두 변수를 바꾸면 그림·글이 같은 자리 관계를 유지한
+   채 그룹 전체가 안쪽으로 밀린다.
+     --slide-group-margin-left   그룹 왼쪽 여백  (그림 칸 바깥쪽)
+     --slide-group-margin-right  그룹 오른쪽 여백 (글 칸 바깥쪽)
+   · 0 = 카드(.content-home) 양끝에 딱 붙음 → 상단 바 제목·메뉴 끝과 정렬.
+   · 글 칸은 폭이 고정(아래 flex: 0 0 34rem)이므로, 여백을 늘리면 줄어드는 쪽은
+     그림 칸이다. 글 칸도 줄이려면 .post-text 의 flex 값을 낮춘다.
+   · 예) 양쪽 2rem 씩:  --slide-group-margin-left: 2rem; --slide-group-margin-right: 2rem;
+   · 좌우 같은 값이면 그룹이 카드 가운데로 모인다. */
+.post-with-thumb {
+    --slide-group-margin-left:  0rem;   /* 그룹 왼쪽 여백 */
+    --slide-group-margin-right: 7rem;   /* 그룹 오른쪽 여백 */
+    margin-left:  var(--slide-group-margin-left);
+    margin-right: var(--slide-group-margin-right);
+}
 
 .post-with-thumb {
     display: flex;
