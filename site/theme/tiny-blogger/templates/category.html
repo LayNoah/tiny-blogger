@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} | {% endblock %}
+
+{% block header %}
+  <div class="alert alert-light mt-3 mb-4">
+    Posts with category : <strong>{{ category.name }}</strong>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {% include '_article_list.html' %}
+  {% include '_pagination.html' %}
+{% endblock %}

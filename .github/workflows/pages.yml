@@ -1,0 +1,60 @@
+# Build the Pelican site in ./site and deploy it to GitHub Pages.
+# Repo settings → Pages → Source must be set to "GitHub Actions".
+name: Deploy blog to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'site/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: site/requirements.txt
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install Pelican
+        run: pip install -r site/requirements.txt
+
+      - name: Build site
+        working-directory: site
+        env:
+          # https://<user>.github.io or https://<user>.github.io/<repo>, whichever this repo is.
+          SITEURL: ${{ steps.pages.outputs.base_url }}
+        run: pelican content -s publishconf.py -o output
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

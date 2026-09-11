@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Flask instance data
+instance/*.sqlite
+
+# Pelican build output
+site/output/

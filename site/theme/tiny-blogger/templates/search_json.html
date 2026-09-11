@@ -1,0 +1,14 @@
+{#- JSON index consumed by static/js/search.js. One entry per article. -#}
+[
+{%- for article in articles %}
+  {
+    "title": {{ article.title|striptags|tojson }},
+    "url": {{ (SITEURL ~ '/' ~ article.url)|tojson }},
+    "date": {{ article.date.strftime('%Y-%m-%d')|tojson }},
+    "category": {{ article.category.name|tojson }},
+    "category_url": {{ (SITEURL ~ '/' ~ article.category.url)|tojson }},
+    "summary": {{ article.summary|striptags|truncate(255)|tojson }},
+    "text": {{ article.content|striptags|tojson }}
+  }{% if not loop.last %},{% endif %}
+{%- endfor %}
+]

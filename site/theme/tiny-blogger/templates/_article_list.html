@@ -1,0 +1,23 @@
+{# One <article> block per post, same markup as blog/templates/index.html. #}
+{% for article in articles_page.object_list %}
+  <article class="post">
+    <header>
+      <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+      <div class="text-muted">
+        {{ article.date.strftime('%Y-%m-%d') }}
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        <a class="text-muted" href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
+      </div>
+    </header>
+    <p class="body">
+    {% if POSTS_TRUNCATE %}
+      {{ article.summary|striptags|truncate() }}
+    {% else %}
+      {{ article.content }}
+    {% endif %}
+    </p>
+  </article>
+  {% if not loop.last %}
+    <hr>
+  {% endif %}
+{% endfor %}

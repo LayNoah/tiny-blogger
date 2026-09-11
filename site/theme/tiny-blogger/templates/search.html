@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Search | {% endblock %}
+
+{% block header %}
+  <div id="search-header" class="alert alert-light mt-3 mb-4 alert-dismissible" hidden>
+    Search results : <strong id="search-query"></strong>
+    <a href="{{ SITEURL }}/" type="button" class="close" title="Click to clear search results">&times;</a>
+  </div>
+  <div id="search-empty" class="alert alert-light mt-3 mb-4" hidden>
+    No posts matched your keyword.
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div id="search-results" data-index="{{ SITEURL }}/{{ SEARCH_JSON_SAVE_AS }}"></div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/search.js"></script>
+{% endblock %}
